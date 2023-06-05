@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: none;
+    text-decoration: none;
+    outline: none;
+    font-family: 'Orbitron', sans-serif;
+    
+}
+
+body {
+    background-color: black;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.star {
+    top: 0px;
+    position: absolute;
+    z-index: -100;
+    background-color: rgb(255, 255, 255);
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    box-shadow: 
+        .5px .5px 1px 1px white,
+        .5px .5px 5px 1px white,
+        .5px .5px 5px 1px white;
+    animation: fallingStars linear infinite both;  
+}
+
+@keyframes fallingStars {
+    0% {
+        top: -10px;
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+button,a {
+    cursor: pointer;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 45px;
+    width: inherit;
+    height: inherit;
+}
+
+main h1 {
+    color: white;
+    font-size: 3em;
+    font-weight: thin;
+    letter-spacing: 15px;
+
+}
+
+.startBtn {
+    position: relative;
+    padding: 20px;
+    letter-spacing: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: white;
+    transition: .3s;
+    transition-timing-function: ease-in-out;
+}
+
+.startBtn::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    z-index: -1;
+    animation: poppingUp .8s ease-in-out  infinite both;
+}
+
+@keyframes poppingUp {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.2);
+    }
+}
+.startBtn:hover {
+    background-color: black;
+    color: white;
+}
+
+:root {
+    --boardWidth: 1000px;
+    --boardHeight: 500px;
+}
+
+#board {
+    display: grid;
+    position: relative;
+    grid-template-columns: repeat(4,auto);
+    gap: 50px;
+    width: var(--boardWidth);
+    height: var(--boardHeight);
+}
+
+.square {
+    background-color: rgb(255, 0, 0);
+    border-radius: 10px;
+    box-shadow: 
+        5px 5px 10px 5px red,
+        5px 5px 10px 5px red,
+        5px 5px 30px 5px red;
+    transition: .4s;
+    animation: squareBouncing 1s ease-in-out  infinite alternate both;
+}
+
+@keyframes squareBouncing {
+    0% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(10px);
+    }
+}
+
+.squareClicked {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 
+        5px 5px 10px 5px white,
+        5px 5px 10px 5px white,
+        5px 5px 30px 5px white;
+}
+
+.square:hover {
+    opacity: .3;
+    animation-name: none;
+}
+
+footer {
+    color: white;
+}

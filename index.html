@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="./node_modules/siriwave/dist/siriwave.umd.js"></script>
+    <script src="./star.js"></script>
+    <title>The Enhanced Memory Game</title>
+</head>
+<body>
+    <main>
+        <h1>The Enhanced Memory Game</h1>
+
+        <button class="startBtn">Start the Game!</button>
+    
+        <section id="board">
+            <button type="button" class="square"></button>
+            <button type="button" class="square"></button>
+            <button type="button" class="square"></button>
+            <button type="button" class="square"></button>
+            <button type="button" class="square"></button>
+            <button type="button" class="square"></button>
+            <button type="button" class="square"></button>
+            <button type="button" class="square"></button>
+        </section>
+
+        <footer>Made By Ruan Mesquita</footer>
+    </main>
+    
+</body>
+<script>
+    const body = document.querySelector("body")
+    const startBtn = document.querySelector(".startBtn")
+    const board = document.getElementById("board")
+    const squares = board.querySelectorAll(".square")
+
+    let startGame = false
+    let chosenSequence = []
+    let sequence = []
+
+    // Create the stars effect 
+
+    for(let i = 0; i<200; i++) {
+        
+        let star = document.createElement("span")
+        let size = `${Math.random() * 1 +.5}px`
+
+        star.classList.add("star")
+
+        star.style.animationDuration = `${Math.random() * 3 + 1}s`
+        star.style.animationDelay = `${Math.random() * 2}s`
+        star.style.left = `${Math.random() * 100}vw`
+        star.style.top = `${Math.random() * 100}vh`
+        star.style.width = size
+        star.style.height= size * 1.1
+        star.style.filter = `blur(${Math.random * 10}px)`
+
+        body.appendChild(star)
+
+        
+    }
+
+    //Function to randomize the sequence buttons
+
+    const randomize = () => {
+        let arr = []
+
+        for (let i = 0; i<squares.length;i++) {
+            arr.push(i)
+        }
+
+        for (let i = arr.length-1; i> 0;i--) {
+
+            let firstValue = Math.floor(Math.random() * i)
+            let temp = arr[i]
+
+            arr[i] = arr[firstValue]
+            arr[firstValue] = temp
+        }
+        
+        return arr
+    }
+
+    // function to start the sequential count
+
+    startBtn.addEventListener("click",() => {
+        if(!startGame) {
+            let time = 1000
+            let count = 4
+            startBtn.innerText = "Select the right squares"
+
+            // Create a sequence with four squares
+
+            sequence = randomize().filter((value,index) =>{
+                if (index <= 4) return value
+            })
+   
+            for (let i = 0; i<sequence.length; i++) {
+                setTimeout(()=> {
+                    squares[sequence[i]].classList.add("squareClicked")
+                },time) 
+
+                time += 500
+            }
+            setTimeout(() => squares.forEach(el => el.classList.remove("squareClicked")),time + 1000)
+            setTimeout(() => {
+                startGame = true
+                alert("Click on the right squares in the right sequence! ")
+            },time + 2000)
+        } 
+    })
+
+    for (let i = 0; i<squares.length; i++) {
+        squares[i].addEventListener("click", ()=> {
+            // if (chosenSequence.length == sequence.length) {
+            //     for (let i = 0; i<chosenSequence.length; i++) {
+            //         if (sequence[i] !== chosenSequence[i]) {
+            //             alert("Sequence is Wrong! Start Again by clicking on 'Start The Game'")
+            //             location.reload()
+            //             return
+            //         }
+            //     }
+
+            //     alert("Congratz!!!! You've chosen the right sequence")
+            //     location.reload()
+            //     return
+            // }
+            if (startGame) {
+
+                squares[i].classList.add("squareClicked")
+                chosenSequence.push(i)
+
+                if(!chosenSequence.every((el,index) => el == sequence[index])) {
+                    alert("Sequence is Wrong! Start Again by clicking on 'Start The Game'")
+                    setTimeout(() => location.reload(),1000)
+                } else if (chosenSequence.every((el,index) => el == sequence[index]) && chosenSequence.length == sequence.length) {
+                    alert("Congratz!!!! You've chosen the right sequence")
+                    setTimeout(() => location.reload(),1000)
+                }
+            }
+        })
+    }
+
+   
+</script>
+</html>
